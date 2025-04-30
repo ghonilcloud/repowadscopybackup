@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+  font-family: 'Philosopher', sans-serif;
+  background: linear-gradient(145deg, #f6c78f, #fddbb3);
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.login-card {
+  font-family: 'Philosopher';
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  width: 90%;
+  background-color: #ffe6d0;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 1.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+form input {
+  width: 94%;
+  padding: 0.5rem;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffe6d0;
+}
+
+.login-button, .resend-button {
+  background-color: white;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  color: black;
+}
+
+.login-button:hover, .resend-button:hover {
+  background-color: #fae0cb;
+}
+
+.login-button:disabled, .resend-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  background-color: #e6f7e6;
+  color: #2e7d32;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.signup-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: #68423d;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Google Login Button Styles */
+.google-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #757575;
+}
+
+.google-login-button:hover {
+  background-color: #f1f1f1;
+}
+
+.google-login-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+/* Separator Line */
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #68423d;
+}
+
+.separator span {
+  padding: 0 10px;
+  font-size: 0.8rem;
+  color: #68423d;
+}

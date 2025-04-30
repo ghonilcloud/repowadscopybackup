@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  font-family: 'Philosopher', sans-serif;
+  background: linear-gradient(145deg, #f6c78f, #fddbb3);
+}
+
+.submit-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.submit-card {
+  margin: auto;
+  background-color: #ffe6d0;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+}
+
+.submit-card h2 {
+  margin-bottom: 1.5rem;
+}
+
+.submit-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submit-card label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.submit-card input {
+  width: 94%;
+  padding: 0.5rem;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffe6d0;
+}
+
+.submit-card textarea {
+  width: 94%;
+  padding: 0.5rem;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffe6d0;
+}
+
+.submit-btn {
+  background-color: white;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  color: black;
+}
+
+.submit-btn:hover {
+  background-color: #fae0cb;
+}
+
+form select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #68423d;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffe6d0;
+  margin: 0 0 0 0;
+}
+
+.file-upload-section {
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.file-upload-section h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #68423d;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}

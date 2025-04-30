@@ -1,0 +1,254 @@
+.signup-container {
+    font-family: 'Philosopher';
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+    max-width: 350px;
+    width: 90%;
+    background-color: #ffe6d0;
+    text-align: center;
+  }
+  
+  .signup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .progress-circles {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffe4c4;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid black;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 20px;
+    z-index: 2;
+  }
+  
+  .circle.active {
+    background-color: #68423d;
+    transform: scale(1.2);
+    color: white;
+  }
+  
+  .circle.completed {
+    background-color: #68423d;
+  }
+
+  .line {
+    flex: 1;
+    height: 4px;
+    width: 40px;
+    background-color: #ccc;
+    z-index: 1;
+    top: 0;
+    position: relative;
+  }
+  
+  .circle.completed + .line {
+    background-color: #4caf50;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  form label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  form input {
+    width: 94%;
+    padding: 0.5rem;
+    border: 2px solid #68423d;
+    border-radius: 8px;
+    outline: none;
+    background-color: #ffe6d0;
+  }
+
+  form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #68423d;
+    border-radius: 8px;
+    outline: none;
+    background-color: #ffe6d0;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .full-width-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .button-group button {
+    flex: 1;
+  }  
+  
+  button {
+    background-color: white;
+    border: 2px solid #68423d;
+    border-radius: 8px;
+    padding: 0.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: black;
+  }
+  
+  button:hover {
+    background-color: #fae0cb;
+  }
+  
+  /* Email verification styles */
+  .verification-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px 10px;
+  }
+
+  .otp-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  .email-highlight {
+    font-weight: bold;
+    color: #4c84ff;
+    margin: 10px 0;
+    word-break: break-all;
+  }
+
+  .verification-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 15px;
+  }
+
+  .verification-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .resend-btn {
+    background-color: #fff;
+    color: #4c84ff;
+    border: 1px solid #4c84ff;
+  }
+
+  .resend-btn:hover {
+    background-color: #eef4ff;
+  }
+
+  .login-btn {
+    background-color: #4c84ff;
+    color: white;
+  }
+
+  .success-message {
+    background-color: #e6f7e6;
+    color: #2e7d32;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  /* Mobile responsiveness for verification */
+  @media (max-width: 600px) {
+    .verification-message {
+      padding: 10px 5px;
+    }
+    
+    .otp-icon {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* Google authentication styles */
+  .google-email {
+    background-color: #f1f8e9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #33691e;
+  }
+
+  /* Google Login Button Styles */
+  .google-login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #757575;
+    margin: 0 auto 15px auto;
+    width: 80%;
+  }
+
+  .google-login-button:hover {
+    background-color: #f1f1f1;
+  }
+
+  .google-login-button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+
+  .submit-button {
+    background-color: white;
+    border: 2px solid #68423d;
+    border-radius: 8px;
+    padding: 0.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: black;
+    width: 100%;
+  }
+
+  .submit-button:hover {
+    background-color: #fae0cb;
+  }
+
+  .submit-button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+  

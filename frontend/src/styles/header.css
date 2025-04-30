@@ -1,0 +1,103 @@
+.header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    position: fixed;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffe6d0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-family: 'Philosopher';
+    color: black;
+  }
+
+  .btn-group {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 170px;
+    color: black;
+    transition: background 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #d69a78;
+    color: white;
+  }
+
+  .btn-container {
+    display: flex;
+    border: 3px solid #d69a78;
+    justify-content: space-between;
+    border-radius: 11px;
+  }
+
+  .active {
+    background-color: #d69a78;
+    color: white;
+  }
+
+  .logout {
+    color: white;
+    background-color: #863c11;
+  }
+
+  .profile-btn {
+    color: white;
+    background-color: #863c11;
+  }
+
+  .profile-btn:hover {
+    background-color: #6d2f0d;
+  }
+
+  .logout-btn {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: #863c11;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+  }
+
+  .logout-btn:hover {
+    background-color: #6d2f0d;
+  }
+
+  .profile-icon-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #863c11;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 0;
+  }
+
+  .profile-icon-btn:hover {
+    background-color: #6d2f0d;
+  }
