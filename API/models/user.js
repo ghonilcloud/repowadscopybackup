@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ['male', 'female']
+    enum: ['male', 'female', 'other', 'prefer_not_to_say']
   },
   role: {
     type: String,
@@ -51,12 +51,24 @@ const userSchema = new mongoose.Schema({
     minlength: 7,
     trim: true
   },
+  profilePicture: {
+    public_id: String,
+    url: String
+  },
   tokens: [{
     token: {
       type: String,
       required: true
     }
-  }]
+  }],
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  otp: {
+    code: String,
+    expiresAt: Date
+  }
 }, {
   timestamps: true
 });
@@ -79,6 +91,39 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
+// Generate OTP
+userSchema.methods.generateOTP = async function() {
+  const user = this;
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+  user.otp = {
+    code: otp,
+    expiresAt: new Date(Date.now() + 3 * 60 * 1000) // 3 minutes expiry
+  };
+  await user.save();
+  return otp;
+};
+
+// Verify OTP
+userSchema.methods.verifyOTP = async function(code) {
+  const user = this;
+  if (!user.otp || !user.otp.code || !user.otp.expiresAt) {
+    throw new Error('No OTP found');
+  }
+  
+  if (Date.now() > user.otp.expiresAt) {
+    throw new Error('OTP has expired');
+  }
+  
+  if (user.otp.code !== code) {
+    throw new Error('Invalid OTP');
+  }
+  
+  user.isVerified = true;
+  user.otp = undefined;
+  await user.save();
+  return true;
+};
+
 // Login credentials check
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
@@ -88,6 +133,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     throw new Error('Unable to login');
+  }
+  if (!user.isVerified) {
+    throw new Error('Please verify your email before logging in');
   }
   return user;
 };

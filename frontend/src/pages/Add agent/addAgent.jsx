@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header-admin-add-agent';
 import AgentCreationModal from '../../components/AgentCreationModal';
@@ -11,6 +11,7 @@ function AddAgent() {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [createdAgent, setCreatedAgent] = useState(null);
+  const [userData, setUserData] = useState(null);
   
   const [formData, setFormData] = useState({
     firstName: "",
@@ -22,6 +23,31 @@ function AddAgent() {
     password: "",
     role: "service_agent"
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const currentUser = await authService.getCurrentUser();
+        
+        if (!currentUser) {
+          navigate('/login');
+          return;
+        }
+
+        if (currentUser.role !== 'admin') {
+          navigate('/login');
+          return;
+        }
+
+        setUserData(currentUser);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setError('Failed to load user data');
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,19 +63,10 @@ function AddAgent() {
     setLoading(true);
     
     try {
-      // Register the new agent using the API
-      const response = await authService.register({
-        ...formData,
-        role: "service_agent" // Ensure role is set
-      });
-
-      // Save the current form data before resetting
+      const response = await authService.registerServiceAgent(formData);
       setCreatedAgent({...formData});
-      
-      // Show success modal
       setShowModal(true);
       
-      // Reset form
       setFormData({
         firstName: "",
         lastName: "",
@@ -69,7 +86,7 @@ function AddAgent() {
 
   return (
     <div className="add-agent-page">
-      <Header />
+      <Header userData={userData} />
       <main className="add-agent-container">
         <h2>Create Service Agent Account</h2>
         

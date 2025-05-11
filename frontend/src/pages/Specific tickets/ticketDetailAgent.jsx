@@ -6,7 +6,7 @@ import FileAttachments from '../../components/FileAttachments';
 import SatisfactionSurveyModal from '../../components/SatisfactionSurveyModal';
 import ticketService from '../../services/ticketService';
 import chatService from '../../services/chatService';
-import './ticketDetail.css';
+import './ticketDetailAgent.css';
 
 const TicketDetailAgent = () => {
   const [showChatbox, setShowChatbox] = useState(false);
@@ -438,22 +438,16 @@ const TicketDetailAgent = () => {
               ))
             )}
           </div>
-          <form className="chatbox-input" onSubmit={handleSendMessage}>
-            <input 
-              type="text" 
-              placeholder="Type your message..." 
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              disabled={sendingMessage}
-            />
-            <button 
-              type="submit" 
-              disabled={sendingMessage || !newMessage.trim()}
-              style={{ color: newMessage.trim() ? '#003366' : '#aaa', cursor: newMessage.trim() ? 'pointer' : 'not-allowed' }}
-            >
-              {sendingMessage ? '...' : '➤'}
-            </button>
-          </form>
+          <div className="chatbox-input">
+              <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              />
+              <button onClick={handleSendMessage}>➤</button>
+          </div>
         </div>
         )}
     </>

@@ -1,33 +1,117 @@
 const User = require('../models/user');
 const Ticket = require('../models/ticket');
+const { userSendMail } = require('./otpController');
+const cloudinary = require('../config/cloudinary');
+
+// Store OTPs in memory (in production, use Redis or similar)
+const otpStore = new Map();
 
 const signUp = async (req, res) => {
-    const { firstName, lastName, email, password, phone, birthDate, gender, address } = req.body;
+    const { email } = req.body;
 
     try {
-        // Check if user already exists
-        const existingUser = await User.findOne({ email }).maxTimeMS(5000);
-        if (existingUser) {
+        // Check if user already exists and is verified
+        const existingUser = await User.findOne({ email });
+        if (existingUser && existingUser.isVerified) {
             return res.status(400).json({ message: 'Email already in use' });
         }
-    
-        // Create new user (removed duplicate email and password)
-        const newUser = new User({ 
-            firstName, 
-            lastName, 
-            email, 
-            password, 
-            phone, 
-            birthDate, 
-            gender,
-            address 
+
+        // Generate OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Store OTP with expiration
+        otpStore.set(email, {
+            otp,
+            expiresAt: new Date(Date.now() + 3 * 60 * 1000), // 3 minutes
+            userData: req.body // Store the user data temporarily
+        });
+
+        // Send OTP email
+        await userSendMail(
+            email,
+            otp,
+            "Verify Your Email",
+            "Verify Email",
+            res
+        );
+
+        res.status(200).json({
+            message: `Verification code sent to ${email}`
+        });
+    } catch (error) {
+        console.error("Error during signup initiation:", error);
+        res.status(500).json({ message: error.message || 'Internal server error' });
+    }
+};
+
+const sendVerification = async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        // Check if user exists and is verified
+        const existingUser = await User.findOne({ email });
+        if (existingUser && existingUser.isVerified) {
+            return res.status(400).json({ message: 'Email is already registered and verified' });
+        }
+
+        // Generate new OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Store OTP with expiration
+        otpStore.set(email, {
+            otp,
+            expiresAt: new Date(Date.now() + 3 * 60 * 1000), // 3 minutes
+            userData: req.body // Store the user data temporarily
+        });
+
+        await userSendMail(
+            email,
+            otp,
+            "Verify Your Email",
+            "Verify Email",
+            res
+        );
+
+    } catch (error) {
+        console.error("Error sending verification:", error);
+        res.status(500).json({ message: error.message || 'Failed to send verification email' });
+    }
+};
+
+const verifyOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        
+        // Get stored OTP data
+        const storedData = otpStore.get(email);
+        
+        if (!storedData || !storedData.otp) {
+            return res.status(400).json({ message: 'No verification code found. Please request a new one.' });
+        }
+
+        if (Date.now() > storedData.expiresAt) {
+            otpStore.delete(email);
+            return res.status(400).json({ message: 'Verification code has expired. Please request a new one.' });
+        }
+
+        if (storedData.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid verification code' });
+        }
+
+        // Create and save the verified user
+        const userData = storedData.userData;
+        const newUser = new User({
+            ...userData,
+            isVerified: true
         });
 
         await newUser.save();
         const token = await newUser.generateAuthToken();
-    
-        // Send response
-        res.status(201).json({
+
+        // Clear OTP data
+        otpStore.delete(email);
+
+        res.json({
             user: {
                 _id: newUser._id,
                 email: newUser.email,
@@ -35,11 +119,12 @@ const signUp = async (req, res) => {
                 lastName: newUser.lastName
             },
             token,
-            message: `Welcome ${newUser.firstName}! Your account has been created successfully.`
+            message: 'Email verified and account created successfully'
         });
+
     } catch (error) {
-        console.error("Error during user signup:", error);
-        res.status(500).json({ message: error.message || 'Internal server error' });
+        console.error("Error verifying OTP:", error);
+        res.status(400).json({ message: error.message || 'Verification failed' });
     }
 };
 
@@ -77,7 +162,6 @@ const updateProfile = async (req, res) => {
   const allowedUpdates = ['firstName', 'lastName', 'phone', 'address'];
 
   try {
-    // Filter out any fields that aren't in allowedUpdates
     updates.forEach((update) => {
       if (allowedUpdates.includes(update)) {
         req.user[update] = req.body[update];
@@ -181,6 +265,100 @@ const getCustomers = async (req, res) => {
   }
 };
 
+const uploadProfilePicture = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image file provided' });
+    }
+
+    // Convert buffer to base64
+    const base64String = req.file.buffer.toString('base64');
+    const dataURI = `data:${req.file.mimetype};base64,${base64String}`;
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: 'profile_pictures',
+      resource_type: 'auto'
+    });
+
+    // Delete old image if exists
+    if (req.user.profilePicture?.public_id) {
+      try {
+        await cloudinary.uploader.destroy(req.user.profilePicture.public_id);
+      } catch (error) {
+        console.error('Error deleting old image:', error);
+      }
+    }
+
+    // Update user profile picture
+    req.user.profilePicture = {
+      public_id: result.public_id,
+      url: result.secure_url
+    };
+    await req.user.save();
+
+    res.json({ 
+      profilePicture: req.user.profilePicture,
+      message: 'Profile picture updated successfully' 
+    });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ 
+      message: 'Failed to upload profile picture', 
+      error: error.message 
+    });
+  }
+};
+
+const createServiceAgent = async (req, res) => {
+    try {
+        // Only admins can create service agents
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied. Only admins can create service agents.' });
+        }
+
+        const { email } = req.body;
+        
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        // Create the service agent account (already verified)
+        const newAgent = new User({
+            ...req.body,
+            role: 'service_agent',
+            isVerified: true
+        });
+
+        await newAgent.save();
+
+        // Send welcome email with credentials using the dedicated template
+        await userSendMail(
+            email,
+            req.body.password,  // Original unencrypted password
+            null,  // Subject will be set by the email handler
+            'Welcome Service Agent',  // Using the new email type
+            res
+        );
+
+        res.status(201).json({
+            message: 'Service agent account created successfully',
+            user: {
+                _id: newAgent._id,
+                email: newAgent.email,
+                firstName: newAgent.firstName,
+                lastName: newAgent.lastName,
+                role: newAgent.role
+            }
+        });
+    } catch (error) {
+        console.error('Error creating service agent:', error);
+        res.status(500).json({ message: error.message || 'Failed to create service agent account' });
+    }
+};
+
 module.exports = {
   signUp,
   login,
@@ -189,5 +367,9 @@ module.exports = {
   updateProfile,
   getUserById,
   getAgents,
-  getCustomers
+  getCustomers,
+  sendVerification,
+  verifyOTP,
+  uploadProfilePicture,
+  createServiceAgent
 };

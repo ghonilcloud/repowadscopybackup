@@ -18,15 +18,15 @@ const TicketsAgent = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const currentUser = authService.getCurrentUser();
-                console.log('Current User:', currentUser);
+                const currentUserPromise = authService.getCurrentUser();
+                const currentUser = await currentUserPromise; // Properly resolve the Promise
+                
                 if (!currentUser) {
                     navigate("/login");
                     return;
                 }
 
                 setUserData(currentUser);
-
                 // Fetch all tickets
                 fetchTickets();
             } catch (err) {

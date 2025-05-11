@@ -14,8 +14,11 @@ const SignUp = () => {
     birthDate: "",
     gender: "",
     password: "",
+    confirmPassword: "",
     role: "customer"
   });
+  const [otp, setOtp] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,8 +27,38 @@ const SignUp = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value);
+  };
+
+  const validatePasswords = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return false;
+    }
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
+
+  const sendVerificationEmail = async () => {
+    try {
+      setLoading(true);
+      const response = await authService.sendVerificationEmail(formData);
+      setEmailSent(true);
+      setLoading(false);
+      nextStep();
+    } catch (error) {
+      setError(error.message || "Failed to send verification email");
+      setLoading(false);
+    }
+  };
 
   const renderStep = () => {
     switch (step) {
@@ -74,10 +107,48 @@ const SignUp = () => {
           <>
             <label>
               Password
-              <input type="password" name="password" onChange={handleChange} value={formData.password} placeholder="Enter your password" required />
+              <input 
+                type="password" 
+                name="password" 
+                onChange={handleChange} 
+                value={formData.password} 
+                placeholder="Enter your password (min. 8 characters)" 
+                minLength="8"
+                required 
+              />
+            </label>
+            <label>
+              Confirm Password
+              <input 
+                type="password" 
+                name="confirmPassword" 
+                onChange={handleChange} 
+                value={formData.confirmPassword} 
+                placeholder="Confirm your password"
+                minLength="8"
+                required 
+              />
             </label>
             <p className="role-notice">You are signing up as a customer</p>
           </>
+        );
+      case 4:
+        return (
+          <div className="verification-message">
+            <div className="otp-icon">📧</div>
+            <h3>Email Verification</h3>
+            <p>We've sent a verification code to:</p>
+            <p className="email-highlight">{formData.email}</p>
+            <p className="verification-note">Please enter the code to verify your email</p>
+            <input
+              type="text"
+              placeholder="Enter verification code"
+              value={otp}
+              onChange={handleOtpChange}
+              className="otp-input"
+              required
+            />
+          </div>
         );
       default:
         return <p>Thank you for signing up!</p>;
@@ -87,27 +158,35 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (step < 3) {
-      nextStep();
+    if (step === 3) {
+      if (!validatePasswords()) {
+        return;
+      }
+      await sendVerificationEmail();
       return;
     }
 
-    setLoading(true);
-    setError('');
-    
-    try {
-      const response = await authService.register(formData);
-      setLoading(false);
+    if (step === 4) {
+      setLoading(true);
+      setError('');
       
-      // If registration is successful, redirect to login
-      navigate("/login", { 
-        state: { 
-          message: response.message || "Registration successful! Please log in." 
-        } 
-      });
-    } catch (error) {
-      setLoading(false);
-      setError(error.message || "Registration failed. Please try again.");
+      try {
+        const response = await authService.verifyOTP(formData.email, otp);
+        setLoading(false);
+        navigate("/login", { 
+          state: { 
+            message: "Registration successful! Please log in with your verified email." 
+          } 
+        });
+      } catch (error) {
+        setLoading(false);
+        setError(error.message || "Verification failed. Please try again.");
+      }
+      return;
+    }
+
+    if (step < 3) {
+      nextStep();
     }
   };
 
@@ -119,12 +198,12 @@ const SignUp = () => {
         {error && <div className="error-message">{error}</div>}
         
         <div className="progress-circles">
-          {[1, 2, 3].map((circle, index) => (
+          {[1, 2, 3, 4].map((circle, index) => (
             <React.Fragment key={circle}>
               <div className={`circle ${step === circle ? 'active' : ''} ${step > circle ? 'completed' : ''}`}>
                 {circle}
               </div>
-              {index < 2 && <div className="line" />}
+              {index < 3 && <div className="line" />}
             </React.Fragment>
           ))}
         </div>
@@ -139,7 +218,9 @@ const SignUp = () => {
                 style={step === 1 ? { flex: 1 } : {}}
                 disabled={loading}
               >
-                {step === 3 ? (loading ? "Creating Account..." : "Sign Up") : "Next"}
+                {step === 4 ? (loading ? "Verifying..." : "Verify & Complete") :
+                 step === 3 ? (loading ? "Sending..." : "Send Verification Code") :
+                 "Next"}
               </button>
             </div>
           </form>

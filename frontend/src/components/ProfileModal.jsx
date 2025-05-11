@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfileModal.css';
 import authService from '../services/authService';
@@ -9,6 +9,8 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -28,7 +30,8 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
         state: '',
         zip: '',
         country: ''
-      }
+      },
+      profilePicture: userData?.profilePicture || null
     });
     setIsEditing(true);
     setError(null);
@@ -53,6 +56,41 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
         [name]: value
       }
     }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    setUploadingImage(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/user/profile-picture', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      const data = await response.json();
+      setEditData(prev => ({
+        ...prev,
+        profilePicture: data.profilePicture
+      }));
+      
+    } catch (error) {
+      setError('Failed to upload image: ' + (error.message || 'Unknown error'));
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleSubmit = async () => {
@@ -117,6 +155,30 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
               {error && <div className="profile-edit-error">{error}</div>}
               {success && <div className="profile-edit-success">Profile updated successfully!</div>}
               
+              <div className="profile-picture-upload">
+                <div className="current-profile-picture">
+                  <img 
+                    src={editData.profilePicture?.url || '/default-avatar.png'} 
+                    alt="Profile" 
+                  />
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => fileInputRef.current.click()}
+                  disabled={uploadingImage}
+                  className="upload-picture-btn"
+                >
+                  {uploadingImage ? 'Uploading...' : 'Change Profile Picture'}
+                </button>
+              </div>
+
               <div className="edit-group">
                 <label htmlFor="firstName">First Name</label>
                 <input 
@@ -231,6 +293,12 @@ const ProfileModal = ({ isOpen, onClose, userData }) => {
           ) : (
             <>
               <div className="profile-modal-body">
+                <div className="profile-picture">
+                  <img 
+                    src={userData?.profilePicture?.url || '/default-avatar.png'} 
+                    alt="Profile" 
+                  />
+                </div>
                 <div className="profile-info-row">
                   <span className="profile-label">Name</span>
                   <span className="profile-value">{userData?.firstName} {userData?.lastName}</span>

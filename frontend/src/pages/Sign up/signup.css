@@ -1,3 +1,13 @@
+:root {
+  font-family: 'Philosopher', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
 .signup-container {
     font-family: 'Philosopher';
     padding: 2rem;
@@ -5,8 +15,10 @@
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
     max-width: 350px;
     width: 90%;
+    margin-top: 100px;
     background-color: #ffe6d0;
     text-align: center;
+    box-sizing: border-box;
   }
   
   .signup-page {
@@ -67,6 +79,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
   }
   
   form label {
@@ -75,17 +88,10 @@
     align-items: flex-start;
     font-weight: bold;
     font-size: 0.9rem;
+    width: 100%;
   }
   
-  form input {
-    width: 94%;
-    padding: 0.5rem;
-    border: 2px solid #68423d;
-    border-radius: 8px;
-    outline: none;
-    background-color: #ffe6d0;
-  }
-
+  form input,
   form select {
     width: 100%;
     padding: 0.5rem;
@@ -93,12 +99,15 @@
     border-radius: 8px;
     outline: none;
     background-color: #ffe6d0;
+    box-sizing: border-box;
+    font-family: inherit;
   }
-  
+
   .button-group {
     display: flex;
     gap: 10px;
     margin-top: 20px;
+    width: 100%;
   }
 
   .full-width-button {
@@ -108,9 +117,12 @@
   
   .button-group button {
     flex: 1;
+    box-sizing: border-box;
   }  
   
-  button {
+  button,
+  .submit-button,
+  .google-login-button {
     background-color: white;
     border: 2px solid #68423d;
     border-radius: 8px;
@@ -119,10 +131,17 @@
     cursor: pointer;
     transition: 0.3s;
     color: black;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   button:hover {
     background-color: #fae0cb;
+  }
+
+  button:focus,
+  button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(104, 66, 61, 0.5);
   }
   
   /* Email verification styles */
@@ -131,25 +150,67 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 15px 10px;
+    padding: 20px;
   }
 
   .otp-icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #004ac2;
   }
 
   .email-highlight {
     font-weight: bold;
-    color: #4c84ff;
-    margin: 10px 0;
+    color: #004ac2;
+    margin: 15px 0;
     word-break: break-all;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
   }
 
   .verification-note {
-    font-size: 0.9rem;
     color: #666;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+  }
+
+  .otp-input {
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+    letter-spacing: 4px;
+    font-size: 24px;
+    padding: 10px;
+    margin: 20px auto;
+    border: 2px solid #004ac2;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+  }
+
+  .otp-input:focus {
+    outline: none;
+    border-color: #68423d;
+    box-shadow: 0 0 5px rgba(104, 66, 61, 0.5);
+  }
+
+  .resend-link {
+    color: #004ac2;
+    text-decoration: underline;
+    cursor: pointer;
     margin-top: 15px;
+    font-size: 0.9em;
+  }
+
+  .resend-link:hover {
+    color: #68423d;
+  }
+
+  .verification-timer {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
   }
 
   .verification-actions {
@@ -157,6 +218,7 @@
     flex-direction: column;
     width: 100%;
     gap: 10px;
+    box-sizing: border-box;
   }
 
   .resend-btn {
@@ -220,6 +282,7 @@
     color: #757575;
     margin: 0 auto 15px auto;
     width: 80%;
+    box-sizing: border-box;
   }
 
   .google-login-button:hover {
@@ -231,18 +294,6 @@
     cursor: not-allowed;
   }
 
-  .submit-button {
-    background-color: white;
-    border: 2px solid #68423d;
-    border-radius: 8px;
-    padding: 0.6rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    color: black;
-    width: 100%;
-  }
-
   .submit-button:hover {
     background-color: #fae0cb;
   }
@@ -251,4 +302,3 @@
     background-color: #e0e0e0;
     cursor: not-allowed;
   }
-  

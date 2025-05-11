@@ -51,7 +51,7 @@ const Users = () => {
                 const analyticsData = await analyticsService.getAnalyticsData();
 
                 // Fetch service agents (role = service_agent)
-                const agentsResponse = await fetch('/api/user/agents', {
+                const agentsResponse = await fetch('/api/user/role/agents', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -65,7 +65,7 @@ const Users = () => {
                 setServiceAgents(agentsData.agents);
 
                 // Fetch customers (role = customer)
-                const customersResponse = await fetch('/api/user/customers', {
+                const customersResponse = await fetch('/api/user/role/customers', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

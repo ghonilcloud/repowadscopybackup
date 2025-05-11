@@ -144,7 +144,7 @@ const TicketDetailCust = () => {
             <Header userData={userData} />
             <div className="ticket-detail">
                 <button onClick={() => navigate('/my-tickets')} className="back-btn">
-                    ← Back to My Tickets
+                    Back
                 </button>
 
                 <h1 className="subject">{ticket.subject}</h1>

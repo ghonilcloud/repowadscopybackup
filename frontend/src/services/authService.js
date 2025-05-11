@@ -1,8 +1,8 @@
 const API_URL = '/api/user';
 
 const authService = {
-  async register(userData) {
-    const response = await fetch(`${API_URL}/signup`, {
+  async sendVerificationEmail(userData) {
+    const response = await fetch(`${API_URL}/send-verification`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -13,12 +13,53 @@ const authService = {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.message || 'Registration failed');
+      throw new Error(data.message || 'Failed to send verification email');
     }
 
-    // Store the token in localStorage
+    return data;
+  },
+
+  async verifyOTP(email, otp) {
+    const response = await fetch(`${API_URL}/verify-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, otp }),
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Invalid verification code');
+    }
+
     if (data.token) {
       localStorage.setItem('token', data.token);
+    }
+
+    return data;
+  },
+
+  async registerServiceAgent(agentData) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await fetch(`${API_URL}/signup/agent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(agentData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to register service agent');
     }
 
     return data;
@@ -103,7 +144,6 @@ const authService = {
       throw new Error('User ID is required');
     }
 
-    // Ensure userId is a string
     const userIdStr = typeof userId === 'object' && userId._id ? userId._id.toString() : userId.toString();
 
     const response = await fetch(`${API_URL}/${userIdStr}`, {

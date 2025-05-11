@@ -25,6 +25,7 @@
     left: 40px;
     padding: 8px 20px;
     background-color: #68423d;
+    max-width: 150px;
     color: white;
     border: none;
     border-radius: 5px;
@@ -117,6 +118,7 @@
     border-top: 1px solid #ddd;
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .chatbox-input input {
@@ -125,14 +127,44 @@
     border: 1px solid #ddd;
     border-radius: 20px;
     outline: none;
+    font-size: 14px;
+}
+
+.chatbox-input input:focus {
+    border-color: #68423d;
+    box-shadow: 0 0 0 2px rgba(104, 66, 61, 0.1);
 }
 
 .chatbox-input button {
-    background: none;
+    width: 36px;
+    height: 36px;
+    background-color: #68423d;
+    color: white;
     border: none;
-    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 0 5px;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.chatbox-input button:hover {
+    background-color: #4a2e2a;
+    transform: scale(1.05);
+}
+
+.chatbox-input button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.send-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
 }
 
 .chat-message {
