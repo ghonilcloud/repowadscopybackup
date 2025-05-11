@@ -1,0 +1,64 @@
+.file-attachments {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+.attachments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    gap: 15px;
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.attachment-preview {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.file-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.file-size {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.download-btn {
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s;
+    text-decoration: none;
+}
+
+.download-btn:hover {
+    transform: scale(1.1);
+}
