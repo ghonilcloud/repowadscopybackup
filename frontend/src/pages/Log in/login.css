@@ -153,3 +153,35 @@ form input {
   font-size: 0.8rem;
   color: #68423d;
 }
+
+/* OAuth Section Styles */
+.oauth-section {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.divider span {
+  padding: 0 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.oauth-login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}

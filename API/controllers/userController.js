@@ -359,6 +359,32 @@ const createServiceAgent = async (req, res) => {
     }
 };
 
+const completeOAuthSignup = async (req, res) => {
+    try {
+        const { phone, birthDate, gender } = req.body;
+        const user = req.user;
+
+        // Update user with additional information
+        user.phone = phone;
+        user.birthDate = birthDate;
+        user.gender = gender;
+        
+        await user.save();
+
+        // Generate new token
+        const token = await user.generateAuthToken();
+
+        res.json({
+            user,
+            token,
+            message: 'Signup completed successfully'
+        });
+    } catch (error) {
+        console.error('Error completing OAuth signup:', error);
+        res.status(400).json({ message: error.message || 'Failed to complete signup' });
+    }
+};
+
 module.exports = {
   signUp,
   login,
@@ -371,5 +397,6 @@ module.exports = {
   sendVerification,
   verifyOTP,
   uploadProfilePicture,
-  createServiceAgent
+  createServiceAgent,
+  completeOAuthSignup
 };

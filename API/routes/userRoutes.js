@@ -33,5 +33,7 @@ router.get('/:userId', auth, userController.getUserById);
 router.get('/role/agents', auth, userController.getAgents);
 router.get('/role/customers', auth, userController.getCustomers);
 router.post('/profile-picture', auth, upload.single('profilePicture'), userController.uploadProfilePicture);
+// OAuth signup completion route
+router.post('/complete-oauth-signup', auth, userController.completeOAuthSignup);
 
 module.exports = router;

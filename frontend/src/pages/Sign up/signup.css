@@ -302,3 +302,37 @@
     background-color: #e0e0e0;
     cursor: not-allowed;
   }
+
+  .signup-choice-container {
+    background: #ffe6d0;
+    margin-top: 250px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.signup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.normal-signup-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #68423d;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.normal-signup-button:hover {
+    background-color: rgb(59, 35, 32);
+}

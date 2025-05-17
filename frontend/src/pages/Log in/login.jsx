@@ -3,6 +3,7 @@ import "./login.css";
 import Header from "../../components/header-login";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import authService from "../../services/authService";
+import OAuthLoginButton from '../../components/OAuthLoginButton';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -84,6 +85,13 @@ const Login = () => {
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </form>
+        
+        <div className="oauth-section">
+          <div className="divider">
+            <span>OR</span>
+          </div>
+          <OAuthLoginButton />
+        </div>
       </div>
     </div>
   );
