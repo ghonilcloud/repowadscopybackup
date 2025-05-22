@@ -1,0 +1,240 @@
+.tickets-container {
+    padding: 90px 40px 40px;
+    background: linear-gradient(to bottom, #ffe6d0, #f7b87a);
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  .title {
+    text-align: center;
+    font-family: 'Philosopher', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+.filter-section {
+    position: relative;
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-toggle {
+    background-color: #f3f4f6;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  }
+  
+  .dropdown-toggle:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .arrow-down {
+    margin-top: 2px;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 6px;
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 8px 0;
+    z-index: 10;
+    width: 160px;
+  }
+  
+  .dropdown-menu li {
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .dropdown-menu li:hover {
+    background-color: #f3f4f6;
+  }  
+
+.ticket-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  .ticket-card {
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .profile-section h3 {
+    margin-top: 5px;
+    margin-bottom: -10px;
+  }
+
+  .date {
+    margin-top: 8px;
+  }
+  
+  .avatar {
+    font-size: 3rem;
+  }
+
+  .subject {
+    font-weight: bold;
+    text-decoration: underline;
+    display: block;
+    font-size: 20px;
+  }
+
+  .category {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .late {
+    color: #b45f06;
+  }
+
+  .product-issues {
+    color: #45818e;
+  }
+
+  .shipping {
+    color: #674ea7;
+  }
+  
+  .description {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
+  .not-assigned {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .handler {
+    color: #009e0f;
+  }
+  
+  .high {
+    color: #cf2a27;
+  }
+  
+  .low {
+    color: #bf9000;
+  }
+  
+  .status {
+    width: 85px;
+    margin-right: 10px;
+    padding: 4px 8px;
+    border: 2px solid black;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .new {background-color: #b1b2b5; }
+    .open { background-color: #9fc5f8; }
+    .pending { background-color: rgb(245, 245, 119); }
+    .on-hold { background-color: rgb(255, 119, 109); }
+    .resolved { background-color: #b6d7a8; }
+  
+  .view-btn {
+    float: right;
+    margin-top: 10px;
+    padding: 6px 20px;
+    background-color: #003366;
+    color: rgb(255, 255, 255);
+    border: 2px solid black;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 150px;
+    margin-top: 60px;
+  }
+
+  .view-btn:hover {
+    background-color: #72a8de;
+    color: black;
+  }
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #68423d;
+}
+
+.no-tickets {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #68423d;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.error-message {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin: 1rem auto;
+  max-width: 500px;
+}
+
+.ticket-rating {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.stars {
+  color: #ffd700;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.rating-feedback {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}

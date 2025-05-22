@@ -1,0 +1,38 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const OAuthLoginButton = () => {
+    const handleGoogleLogin = () => {
+        // Redirect to backend OAuth route
+        window.location.href = 'http://localhost:3000/api/auth/google';
+    };
+
+    return (
+        <div className="oauth-login-container">
+            <button 
+                onClick={handleGoogleLogin}
+                className="google-login-button"
+                style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    backgroundColor: '#fff',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                }}
+            >
+                <img 
+                    src="https://www.google.com/favicon.ico" 
+                    alt="Google" 
+                    style={{ width: '20px', height: '20px' }}
+                />
+                Sign in with Google
+            </button>
+        </div>
+    );
+};
+
+export default OAuthLoginButton;
