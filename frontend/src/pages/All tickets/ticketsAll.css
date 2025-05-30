@@ -109,6 +109,7 @@
     font-weight: bold;
     text-decoration: underline;
     display: block;
+    margin: 5px 0;
     font-size: 20px;
   }
 
@@ -181,8 +182,6 @@
     border-radius: 3px;
     font-weight: bold;
     cursor: pointer;
-    width: 150px;
-    margin-top: 60px;
   }
 
   .view-btn:hover {

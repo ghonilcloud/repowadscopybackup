@@ -86,7 +86,7 @@ const TicketsAgent = () => {
         <>
             <Header userData={userData} />
             <div className="tickets-container">
-                <h2 className="title">All Tickets</h2>
+                <h2 className="title">Assigned Tickets</h2>
 
                 {loading ? (
                     <div className="loading">Loading tickets...</div>
@@ -123,23 +123,15 @@ const TicketsAgent = () => {
                             <div className="ticket-cards">
                                 {filteredTickets.map(ticket => (
                                     <div className="ticket-card" key={ticket.ticketId}>
-                                        <div className="profile-section">
-                                            <div className="avatar">👤</div>
-                                            <div>
-                                                <h3>{ticket.name}</h3>
-                                                <p className="date">{formatDate(ticket.createdAt)}</p>
-                                            </div>
-                                        </div>
                                         <p className="subject">{ticket.subject}</p>
+                                        <p className="date">{formatDate(ticket.createdAt)}</p>
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
                                         <p className="description">{ticket.description}</p>
-                                        <p><strong>Ticket Handler:</strong> <span className={ticket.handler === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.handler}</span></p>
-                                        <p><strong>Priority:</strong> <span className={ticket.priority?.toLowerCase() === 'high' ? 'high' : 'low'}>{ticket.priority}</span></p>
                                         <p className={`status ${ticket.status}`}>
                                             {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                                         </p>
                                         <Link to={`/ticket-agent/${ticket.ticketId}`}>
-                                            <button className="view-btn">View Details</button>
+                                            <button className="view-btn">View</button>
                                         </Link>
                                     </div>
                                 ))}

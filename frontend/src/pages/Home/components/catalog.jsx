@@ -1,3 +1,4 @@
+import React from 'react';
 import homepageImage from '../assets/homepage-image1.png';
 import '../styles/catalog.css';
 import bottomsImage from '../assets/bottoms.png';
