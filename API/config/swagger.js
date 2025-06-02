@@ -12,10 +12,9 @@ const options = {
         name: 'API Support',
         email: 'support@ticketsystem.com'
       }
-    },
-    servers: [
+    },    servers: [
       {
-        url: 'http://localhost:5000/api',
+        url: 'http://localhost:3000/api',
         description: 'Development server',
       },
     ],
@@ -297,11 +296,12 @@ const options = {
         description: 'OAuth authentication'
       }
     ]
-  },
-  apis: [
+  },  apis: [
     './routes/*.js',
-    './controllers/*.js'
-  ], // Path to the API routes and controllers
+    './controllers/*.js',
+    './models/*.js',
+    './middleware/*.js'
+  ], // Path to the API routes, controllers, models, and middleware
 };
 
 const specs = swaggerJsdoc(options);

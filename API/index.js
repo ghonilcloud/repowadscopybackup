@@ -5,6 +5,9 @@ const passport = require('passport');
 const session = require('express-session');
 const app = express();
 
+// Import Swagger configuration
+const { specs, swaggerUi } = require('./config/swagger');
+
 // Initialize OAuth configuration
 require('./config/oauth');
 
@@ -39,6 +42,9 @@ app.use(cors({
 
 // Body parser middleware
 app.use(express.json());
+
+// Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
 // Routes
 app.use('/api/user', userRoutes);
