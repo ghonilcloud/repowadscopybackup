@@ -1,5 +1,5 @@
 .ticket-detail {
-    max-width: 800px;
+    width: 60%;
     margin: 100px auto 40px;
     padding: 30px;
     background-color: white;
@@ -25,6 +25,7 @@
     left: 40px;
     padding: 8px 20px;
     background-color: #68423d;
+    max-width: 150px;
     color: white;
     border: none;
     border-radius: 5px;
@@ -161,8 +162,8 @@
 }
 
 .send-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     fill: currentColor;
 }
 
@@ -212,8 +213,7 @@
 }
 
 .ticket-updates {
-    clear: both;
-    margin-top: 70px;
+    margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #ddd;
 }
@@ -316,96 +316,4 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #eee;
-}
-
-.customer-details-btn {
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  display: flex;
-  width: 40px;
-  justify-content: center;
-}
-
-.customer-details-btn:hover {
-    background-color: rgba(213, 211, 211, 0.621);
-}
-
-.customer-details-btn svg {
-  width: 20px;
-  height: 20px;
-  color: #333;
-  transition: color 0.2s ease;
-}
-
-.customer-details-btn:disabled {
-  cursor: not-allowed;
-}
-
-.customer-details-btn:disabled svg {
-  color: #ccc;
-}
-
-.edit-btn {
-    padding: 6px 20px;
-    background-color: #003366;
-    color: rgb(255, 255, 255);
-    border: 2px solid black;
-    border-radius: 3px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 150px;
-    float: right;
-    margin-bottom: 20px;
-}
-
-.edit-btn.saving {
-    background-color: #4299e1;
-    border-color: #2b6cb0;
-    color: black;
-}
-
-.input-group {
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.input-group select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 2px solid #68423d;
-    border-radius: 8px;
-    background-color: white;
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-}
-
-.input-pair {
-    display: flex;
-    gap: 1.5rem;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.input-pair .input-group {
-    flex: 1;
-    max-width: calc(50% - 0.75rem);
-}
-
-/* Ensure selects don't overflow on mobile */
-@media (max-width: 600px) {
-    .input-pair {
-        flex-direction: column;
-    }
-    
-    .input-pair .input-group {
-        max-width: 100%;
-    }
 }

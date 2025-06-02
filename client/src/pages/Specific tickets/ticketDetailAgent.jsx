@@ -173,6 +173,13 @@ const TicketDetailAgent = () => {
     }
   };
 
+  const formatStatus = (status) => {
+    return status
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const handleSendMessage = async (e) => {
     if (e) e.preventDefault();
     if (!newMessage.trim() || sendingMessage) return;
@@ -367,7 +374,7 @@ const TicketDetailAgent = () => {
                 <option value="Critical">Critical</option>
               </select>
             ) : (
-              <p className={`priority priority-${ticket.priority.toLowerCase()}`}>
+              <p className={`priority ${ticket.priority}`}>
                 {ticket.priority}
               </p>
             )}
@@ -382,15 +389,15 @@ const TicketDetailAgent = () => {
               onChange={(e) => handleChange('status', e.target.value)}
               disabled={saving}
             >
-              <option value="open">Open</option>
-              <option value="in_progress">In Progress</option>
-              <option value="waiting">Waiting on Customer</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
+              <option value="open">{formatStatus('open')}</option>
+              <option value="in_progress">{formatStatus('in_progress')}</option>
+              <option value="waiting">{formatStatus('waiting')}</option>
+              <option value="resolved">{formatStatus('resolved')}</option>
+              <option value="closed">{formatStatus('closed')}</option>
             </select>
           ) : (
             <p className={`status ${ticket.status}`}>
-              {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+              {formatStatus(ticket.status)}
             </p>
           )}
         </div>

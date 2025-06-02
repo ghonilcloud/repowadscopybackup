@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Header from "../../components/header-agent-owned-tickets";
+import Header from "../../components/header-agent-all-tickets";
 import { useNavigate, Link } from 'react-router-dom';
 import './ticketsAll.css';
 import ticketService from '../../services/ticketService';
 import authService from '../../services/authService';
 
-const TicketsOwnedByAgent = () => {
+const TicketsAgent = () => {
     const [filterStatus, setFilterStatus] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [tickets, setTickets] = useState([]);
@@ -13,7 +13,6 @@ const TicketsOwnedByAgent = () => {
     const [error, setError] = useState('');
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -24,16 +23,8 @@ const TicketsOwnedByAgent = () => {
                     navigate("/login");
                     return;
                 }
-
                 setUserData(currentUser);
-                // Only fetch tickets after we have user data
-                const ticketsData = await ticketService.getAllTickets();
-                const agentFullName = `${currentUser.firstName} ${currentUser.lastName}`;
-                const filteredTickets = ticketsData.filter(ticket => 
-                    ticket.handler === agentFullName
-                );
-                setTickets(filteredTickets);
-                setLoading(false);
+                fetchTickets();
             } catch (err) {
                 console.error("Error fetching user data:", err);
                 setError("Error loading user data. Please try again.");
@@ -43,6 +34,18 @@ const TicketsOwnedByAgent = () => {
 
         fetchUserData();
     }, [navigate]);
+
+    const fetchTickets = async () => {
+        try {
+            const ticketsData = await ticketService.getAllTickets(); // Call the method
+            setTickets(ticketsData);
+            setLoading(false);
+        } catch (err) {
+            console.error("Error fetching tickets:", err);
+            setError("Failed to load tickets. Please try again.");
+            setLoading(false);
+        }
+    };
 
     const toggleDropdown = () => {
         setShowDropdown(prev => !prev);
@@ -57,7 +60,6 @@ const TicketsOwnedByAgent = () => {
         setShowDropdown(false);
     };
 
-    // Function to format date
     const formatDate = (timestamp) => {
         if (!timestamp) return 'N/A';
         const date = new Date(timestamp);
@@ -68,7 +70,6 @@ const TicketsOwnedByAgent = () => {
         }).format(date);
     };
 
-    // Map category to class name for styling
     const getCategoryClass = (category) => {
         const categoryMap = {
             'Product Issues': 'product-issues',
@@ -122,10 +123,18 @@ const TicketsOwnedByAgent = () => {
                             <div className="ticket-cards">
                                 {filteredTickets.map(ticket => (
                                     <div className="ticket-card" key={ticket.ticketId}>
+                                        <div className="profile-section">
+                                            <div className="avatar">👤</div>
+                                            <div>
+                                                <h3>{ticket.name}</h3>
+                                                <p className="date">{formatDate(ticket.createdAt)}</p>
+                                            </div>
+                                        </div>
                                         <p className="subject">{ticket.subject}</p>
-                                        <p className="date">{formatDate(ticket.createdAt)}</p>
                                         <p className={`category ${getCategoryClass(ticket.category)}`}>{ticket.category}</p>
                                         <p className="description">{ticket.description}</p>
+                                        <p><strong>Ticket Handler:</strong> <span className={ticket.handler === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.handler}</span></p>
+                                        <p><strong>Priority:</strong> <span className={ticket.priority === 'Not Assigned' ? 'not-assigned' : 'handler'}>{ticket.priority}</span></p>
                                         <p className={`status ${ticket.status}`}>
                                             {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                                         </p>
@@ -143,4 +152,4 @@ const TicketsOwnedByAgent = () => {
     );
 };
 
-export default TicketsOwnedByAgent;
+export default TicketsAgent;

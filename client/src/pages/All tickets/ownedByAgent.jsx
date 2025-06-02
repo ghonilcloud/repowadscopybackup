@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Header from "../../components/header-agent-all-tickets";
+import Header from "../../components/header-agent-owned-tickets";
 import { useNavigate, Link } from 'react-router-dom';
 import './ticketsAll.css';
 import ticketService from '../../services/ticketService';
 import authService from '../../services/authService';
 
-const TicketsAgent = () => {
+const TicketsOwnedByAgent = () => {
     const [filterStatus, setFilterStatus] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [tickets, setTickets] = useState([]);
@@ -13,6 +13,7 @@ const TicketsAgent = () => {
     const [error, setError] = useState('');
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -23,8 +24,16 @@ const TicketsAgent = () => {
                     navigate("/login");
                     return;
                 }
+
                 setUserData(currentUser);
-                fetchTickets();
+                // Only fetch tickets after we have user data
+                const ticketsData = await ticketService.getAllTickets();
+                const agentFullName = `${currentUser.firstName} ${currentUser.lastName}`;
+                const filteredTickets = ticketsData.filter(ticket => 
+                    ticket.handler === agentFullName
+                );
+                setTickets(filteredTickets);
+                setLoading(false);
             } catch (err) {
                 console.error("Error fetching user data:", err);
                 setError("Error loading user data. Please try again.");
@@ -34,18 +43,6 @@ const TicketsAgent = () => {
 
         fetchUserData();
     }, [navigate]);
-
-    const fetchTickets = async () => {
-        try {
-            const ticketsData = await ticketService.getAllTickets(); // Call the method
-            setTickets(ticketsData);
-            setLoading(false);
-        } catch (err) {
-            console.error("Error fetching tickets:", err);
-            setError("Failed to load tickets. Please try again.");
-            setLoading(false);
-        }
-    };
 
     const toggleDropdown = () => {
         setShowDropdown(prev => !prev);
@@ -60,6 +57,7 @@ const TicketsAgent = () => {
         setShowDropdown(false);
     };
 
+    // Function to format date
     const formatDate = (timestamp) => {
         if (!timestamp) return 'N/A';
         const date = new Date(timestamp);
@@ -70,6 +68,7 @@ const TicketsAgent = () => {
         }).format(date);
     };
 
+    // Map category to class name for styling
     const getCategoryClass = (category) => {
         const categoryMap = {
             'Product Issues': 'product-issues',
@@ -86,7 +85,7 @@ const TicketsAgent = () => {
         <>
             <Header userData={userData} />
             <div className="tickets-container">
-                <h2 className="title">Assigned Tickets</h2>
+                <h2 className="title">My Assigned Tickets</h2>
 
                 {loading ? (
                     <div className="loading">Loading tickets...</div>
@@ -131,7 +130,7 @@ const TicketsAgent = () => {
                                             {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                                         </p>
                                         <Link to={`/ticket-agent/${ticket.ticketId}`}>
-                                            <button className="view-btn">View</button>
+                                            <button className="view-btn">View Details</button>
                                         </Link>
                                     </div>
                                 ))}
@@ -144,4 +143,4 @@ const TicketsAgent = () => {
     );
 };
 
-export default TicketsAgent;
+export default TicketsOwnedByAgent;

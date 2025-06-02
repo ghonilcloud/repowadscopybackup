@@ -1,5 +1,5 @@
 .ticket-detail {
-    width: 80%;
+    width: 60%;
     margin: 100px auto 40px;
     padding: 30px;
     background-color: white;
@@ -25,7 +25,6 @@
     left: 40px;
     padding: 8px 20px;
     background-color: #68423d;
-    max-width: 150px;
     color: white;
     border: none;
     border-radius: 5px;
@@ -162,8 +161,8 @@
 }
 
 .send-icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     fill: currentColor;
 }
 
@@ -194,6 +193,11 @@
     border-radius: 15px 15px 15px 0;
 }
 
+.not-assigned {
+    color: red;
+    font-weight: bold;
+  }
+
 .chat-time {
     font-size: 0.8rem;
     color: #666;
@@ -213,9 +217,13 @@
 }
 
 .ticket-updates {
-    margin-top: 30px;
+    clear: both;
     padding-top: 20px;
     border-top: 1px solid #ddd;
+}
+
+h3 {
+    margin-top: -5px;;
 }
 
 .update-item {
@@ -240,7 +248,7 @@
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.875rem;
-  margin-left: 10px;
+  margin-left: -2px;
 }
 
 .status.new { background-color: #e3f2fd; color: #1976d2; }
@@ -255,13 +263,13 @@
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.875rem;
-  margin-left: 10px;
+  margin-left: -5px;
 }
 
-.priority-low { background-color: #e8f5e9; color: #388e3c; }
-.priority-medium { background-color: #fff3e0; color: #f57c00; }
-.priority-high { background-color: #fce4ec; color: #c2185b; }
-.priority-critical { background-color: #ffebee; color: #c62828; }
+.priority.Low { background-color: #e8f5e9; color: #388e3c; }
+.priority.Medium { background-color: #fff3e0; color: #f57c00; }
+.priority.High { background-color: #fce4ec; color: #c2185b; }
+.priority.Critical { background-color: #ffebee; color: #c62828; }
 
 
 /* Category colors */
@@ -316,4 +324,94 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+}
+
+.customer-details-btn {
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  width: 40px;
+  justify-content: center;
+}
+
+.customer-details-btn:hover {
+    background-color: rgba(213, 211, 211, 0.621);
+}
+
+.customer-details-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.customer-details-btn:disabled {
+  cursor: not-allowed;
+}
+
+.customer-details-btn:disabled svg {
+  color: #ccc;
+}
+
+.edit-btn {
+    padding: 6px 20px;
+    background-color: #003366;
+    color: rgb(255, 255, 255);
+    border: 2px solid black;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 150px;
+    float: right;
+    position: relative;
+    top: -20px;
+}
+
+.edit-btn.saving {
+    background-color: #4299e1;
+    border-color: #2b6cb0;
+    color: black;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-group select {
+    width: 180px;
+    padding: 8px 12px;
+    border: 2px solid #68423d;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.input-pair {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.input-pair .input-group {
+    flex: 1;
+    max-width: calc(50% - 0.75rem);
+}
+
+/* Ensure selects don't overflow on mobile */
+@media (max-width: 600px) {
+    .input-pair {
+        flex-direction: column;
+    }
+    
+    .input-pair .input-group {
+        max-width: 100%;
+    }
 }

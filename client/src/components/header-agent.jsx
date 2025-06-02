@@ -15,6 +15,9 @@ const Header = ({ userData }) => {
           <div className='btn-container'>
             <Link to="/all-tickets"><button className="btn">All Tickets</button></Link>
           </div>
+                    <div className='btn-container'>
+                      <Link to="/owned-tickets"><button className="btn">My Tickets</button></Link>
+                    </div>
           <button className="profile-icon-btn" onClick={() => setShowProfile(true)}>
             {userData?.profilePicture?.url ? (
               <img 
@@ -30,6 +33,7 @@ const Header = ({ userData }) => {
         </div>
                         <HamburgerMenu>
           <Link to="/all-tickets"><button className="btn">All Tickets</button></Link>
+                    <Link to="/owned-tickets"><button className="btn">My Tickets</button></Link>
           <button className="btn" onClick={() => setShowProfile(true)}>Profile</button>
         </HamburgerMenu>
       </header>
