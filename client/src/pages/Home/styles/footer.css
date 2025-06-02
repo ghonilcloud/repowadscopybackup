@@ -1,0 +1,10 @@
+.footer-container {
+    display: flex;
+    justify-content: center;
+    gap: 20rem;
+    padding: 1.5rem 0;
+    flex-wrap: wrap;
+    background-color: #ffe6d0;
+    font-family: 'Philoshper';
+    font-size: 20px;
+}

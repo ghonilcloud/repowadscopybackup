@@ -1,0 +1,151 @@
+.hamburger-container {
+  display: none;
+}
+
+.hamburger-button {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  -webkit-tap-highlight-color: transparent; 
+}
+
+.hamburger-button * {
+  background-color: transparent;
+}
+
+.hamburger-button span {
+  width: 30px;
+  height: 3px;
+  background: #000000;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+  z-index: 2001;
+}
+
+.hamburger-button.open {
+  background: transparent !important;
+}
+
+.hamburger-button.open span {
+  background: #000000;
+}
+
+.hamburger-button.open span:first-child {
+  transform: rotate(45deg);
+}
+
+.hamburger-button.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-button.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hamburger-container {
+    display: block;
+  }  .hamburger-button {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    background: transparent !important;
+    background-color: transparent !important;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.3s ease;
+  }
+
+  .hamburger-button:hover {
+    background-color: rgba(214, 154, 120, 0.4) !important;
+  }
+
+  .hamburger-button::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    background: transparent !important;
+  }
+
+  .hamburger-button span {
+    background: #000000;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: #ffe6d0;
+    padding: 80px 20px 20px;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1500;
+  }
+
+  .mobile-nav::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  .mobile-nav.open {
+    right: 0;
+    background-color: #ffe6d0;
+  }
+
+  .mobile-nav.open::before {
+    opacity: 1;
+  }  .mobile-nav a {
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    color: #000;
+    border-bottom: 1px solid #d69a78;
+  }
+  
+  .mobile-nav .btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: #000000;
+    border: none;
+    font-size: 18px;
+    font-family: 'Philosopher';
+    transition: color 0.3s ease;
+    padding: 15px 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .mobile-nav .btn:hover {
+    color: #000000;
+    background-color: rgba(214, 154, 120, 0.4);
+  }
+}
