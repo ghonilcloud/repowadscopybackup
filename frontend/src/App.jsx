@@ -15,10 +15,7 @@ import TicketDetailCust from './pages/Specific tickets/ticketDetailCust'
 
 import AgentHome from './pages/Home/home-agent'
 import TicketsAgent from './pages/All tickets/ticketsAgent'
-<<<<<<< HEAD
 import TicketsOwnedByAgent from './pages/All tickets/ownedByAgent'
-=======
->>>>>>> 294c1e30cf4391b93f86287b75b9048bd61ed022
 import TicketDetailAgent from './pages/Specific tickets/ticketDetailAgent'
 
 import AdminHome from './pages/Home/home-admin'
