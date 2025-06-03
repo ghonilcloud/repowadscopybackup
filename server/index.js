@@ -6,24 +6,18 @@ const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo');
-const PORT = process.env.PORT || 3000;
 
-const app = express();
-
-// Load environment variables
+// Load environment variables first
 dotenv.config();
+
+const PORT = process.env.PORT || 3000;
+const app = express();
 
 // Import Swagger configuration
 const { specs, swaggerUi } = require('./config/swagger');
 
 // Initialize OAuth configuration
 require('./config/oauth');
-
-const userRoutes = require('./routes/userRoutes');
-const ticketRoutes = require('./routes/ticketRoutes');
-const chatRoutes = require('./routes/chatRoutes');
-const analyticsRoutes = require('./routes/analyticsRoutes');
-const oauthRoutes = require('./routes/oauthRoutes');
 
 // Middleware setup
 app.use(session({
@@ -42,7 +36,7 @@ app.use(session({
 // Initialize Passport and CORS
 app.use(passport.initialize());
 app.use(cors({
-    origin: 'http://localhost:5173', // Frontend URL
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -50,6 +44,14 @@ app.use(cors({
 
 // Body parser middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Import routes
+const userRoutes = require('./routes/userRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+const oauthRoutes = require('./routes/oauthRoutes');
 
 // Serve static files from the client build directory
 app.use(express.static(path.join(__dirname, '../client/dist')));
@@ -57,26 +59,25 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
-// Routes
+// Routes - make sure these are all using proper path patterns
 app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
-app.use('/api/chats', chatRoutes);
+app.use('/api/chat', chatRoutes); // Check if this should be "chat" or "chats"
 app.use('/api/analytics', analyticsRoutes);
 app.use('/auth', oauthRoutes);
 
-// Serve React app for all other routes
+// Catch-all route for React app
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
+// Connect to MongoDB
 mongoose.connect(process.env.CONNECTION_URL, {
     serverSelectionTimeoutMS: 15000,
     socketTimeoutMS: 45000,
     connectTimeoutMS: 15000,
     retryWrites: true,
-    directConnection: true,
-    maxPoolSize: 10,
-    heartbeatFrequencyMS: 2000
+    maxPoolSize: 10
 })
 .then(() => console.log('Connected to MongoDB successfully'))
 .catch(err => console.error('MongoDB connection error:', err));
@@ -90,6 +91,9 @@ mongoose.connection.on('disconnected', () => {
     }, 5000);
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app; // Export for testing purposes
