@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
+const dotenv = require('dotenv');
+
 const app = express();
+
+// Load environment variables
+dotenv.config();
 
 // Import Swagger configuration
 const { specs, swaggerUi } = require('./config/swagger');
@@ -16,13 +22,6 @@ const ticketRoutes = require('./routes/ticketRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const oauthRoutes = require('./routes/oauthRoutes');
-
-// const auth = require('./middleware/auth');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const CONNECTION_URL = process.env.CONNECTION_URL;
-const PORT = process.env.PORT;
 
 // Middleware setup
 app.use(session({
@@ -43,6 +42,9 @@ app.use(cors({
 // Body parser middleware
 app.use(express.json());
 
+// Serve static files from the client build directory
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
@@ -51,32 +53,35 @@ app.use('/api/user', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
-app.use('/api/auth', oauthRoutes);
+app.use('/auth', oauthRoutes);
 
-// MongoDB connection options
-const mongooseOptions = {
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000
-};
-
-// Connect to MongoDB
-mongoose.connect(CONNECTION_URL, mongooseOptions)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Handle MongoDB connection errors
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
+// Serve React app for all other routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
+mongoose.connect(process.env.CONNECTION_URL, {
+    serverSelectionTimeoutMS: 15000,
+    socketTimeoutMS: 45000,
+    connectTimeoutMS: 15000,
+    retryWrites: true,
+    directConnection: true,
+    maxPoolSize: 10,
+    heartbeatFrequencyMS: 2000
+})
+.then(() => console.log('Connected to MongoDB successfully'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+// Add retry logic for connection
 mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB disconnected');
+    console.log('MongoDB disconnected. Attempting to reconnect...');
+    setTimeout(() => {
+        mongoose.connect(process.env.CONNECTION_URL)
+            .catch(err => console.error('Reconnection failed:', err));
+    }, 5000);
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+    console.log(`Server is running on port ${PORT}`);
 });
