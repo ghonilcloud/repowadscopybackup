@@ -6,6 +6,7 @@ const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo');
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -89,7 +90,6 @@ mongoose.connection.on('disconnected', () => {
     }, 5000);
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
