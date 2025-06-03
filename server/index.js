@@ -56,15 +56,15 @@ const oauthRoutes = require('./routes/oauthRoutes');
 // Serve static files from the client build directory
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-// Serve Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+// // Serve Swagger documentation
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
-// Routes - make sure these are all using proper path patterns
-app.use('/api/user', userRoutes);
-app.use('/api/tickets', ticketRoutes);
-app.use('/api/chat', chatRoutes); // Check if this should be "chat" or "chats"
-app.use('/api/analytics', analyticsRoutes);
-app.use('/auth', oauthRoutes);
+// // Routes - make sure these are all using proper path patterns
+// app.use('/api/user', userRoutes);
+// app.use('/api/tickets', ticketRoutes);
+// app.use('/api/chat', chatRoutes); // Check if this should be "chat" or "chats"
+// app.use('/api/analytics', analyticsRoutes);
+// app.use('/auth', oauthRoutes);
 
 // Catch-all route for React app
 app.get('*', (req, res) => {
