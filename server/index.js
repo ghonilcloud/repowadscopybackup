@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 
@@ -27,7 +28,14 @@ const oauthRoutes = require('./routes/oauthRoutes');
 app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.CONNECTION_URL,
+        ttl: 14 * 24 * 60 * 60, // = 14 days session TTL
+        crypto: {
+            secret: process.env.JWT_SECRET
+        }
+    })
 }));
 
 // Initialize Passport and CORS
