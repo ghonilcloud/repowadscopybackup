@@ -67,13 +67,13 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 // app.use('/auth', oauthRoutes);
 
 // Catch-all route for React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 // });
-
-app.get((req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
 
 // Connect to MongoDB
 mongoose.connect(process.env.CONNECTION_URL, {
