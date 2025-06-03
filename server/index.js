@@ -1,8 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const passport = require('passport');
-const session = require('express-session');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import passport from 'passport';
+import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
 const app = express();
 
 // Import Swagger configuration
@@ -43,6 +47,11 @@ app.use(cors({
 // Body parser middleware
 app.use(express.json());
 
+// Serve static files from the client build directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(join(__dirname, '../client/dist')));
+
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
@@ -53,7 +62,12 @@ app.use('/api/chats', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/auth', oauthRoutes);
 
-// // MongoDB connection options
+// Serve React app for all other routes
+app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, '../client/dist/index.html'));
+});
+
+// MongoDB connection options
 // const mongooseOptions = {
 //   serverSelectionTimeoutMS: 5000,
 //   socketTimeoutMS: 45000
